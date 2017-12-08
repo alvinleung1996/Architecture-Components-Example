@@ -12,11 +12,13 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alvin.archexample.DataSource.Item;
+
 public class MainActivity extends AppCompatActivity {
 
-    private class DataListAdapter extends RecyclerView.Adapter<DataItemViewHolder> {
+    private class Adapter extends RecyclerView.Adapter<ViewHolder> {
 
-        private List<String> mData = new ArrayList<>();
+        private List<Item> mData = new ArrayList<>();
 
         @Override
         public int getItemCount() {
@@ -24,34 +26,37 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public DataItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_data, parent, false);
-            return new DataItemViewHolder(view);
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
+            return new ViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(DataItemViewHolder holder, int position) {
-            String entry = mData.get(position);
-            holder.onBindData(entry);
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            Item item = mData.get(position);
+            holder.onBind(item);
         }
 
-        private void setData(List<String> data) {
+        private void setData(List<Item> data) {
             mData = data;
             notifyDataSetChanged();
         }
     }
 
-    private class DataItemViewHolder extends RecyclerView.ViewHolder {
+    private class ViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView mDataText;
+        private final TextView mStrText;
+        private final TextView mNumText;
 
-        private DataItemViewHolder(View view) {
+        private ViewHolder(View view) {
             super(view);
-            mDataText = view.findViewById(R.id.data_text);
+            mStrText = view.findViewById(R.id.str_text);
+            mNumText = view.findViewById(R.id.num_text);
         }
 
-        private void onBindData(String entry) {
-            mDataText.setText(entry);
+        private void onBind(Item item) {
+            mStrText.setText(item.str);
+            mNumText.setText(String.valueOf(item.num));
         }
 
     }
@@ -62,10 +67,10 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        DataListAdapter adapter = new DataListAdapter();
+        Adapter adapter = new Adapter();
 
-        RecyclerView dataList = findViewById(R.id.data_list);
-        dataList.setAdapter(adapter);
+        RecyclerView list = findViewById(R.id.list);
+        list.setAdapter(adapter);
 
         MainActivityViewModel viewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
 

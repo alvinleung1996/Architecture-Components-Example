@@ -5,13 +5,15 @@ import android.arch.lifecycle.ViewModel;
 
 import java.util.List;
 
+import com.alvin.archexample.DataSource.Item;
+
 public class MainActivityViewModel extends ViewModel {
 
-    private LiveData<List<String>> mData;
+    private LiveData<List<Item>> mData;
 
-    public LiveData<List<String>> getData() {
+    public LiveData<List<Item>> getData() {
         if (mData == null) {
-            mData = DataSource.queryAllData();
+            mData = DataSource.queryData();
         }
         return mData;
     }
