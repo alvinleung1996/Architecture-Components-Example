@@ -26,10 +26,10 @@ public class DataSource {
     public static LiveData<List<Item>> queryData() {
         MutableLiveData<List<Item>> data = new MutableLiveData<>();
 
-        new AsyncTask<Void, Void, List<Item>>() {
+        new AsyncTask<Void, Void, Void>() {
 
             @Override
-            protected List<Item> doInBackground(Void... voids) {
+            protected Void doInBackground(Void... voids) {
                 final int max = 9999;
                 List<Item> list = new ArrayList<>(max);
                 for (int num = 1; num <= max; ++num) {
@@ -40,12 +40,8 @@ public class DataSource {
                     }
                     list.add(new Item(numStr.toString(), num));
                 }
-                return list;
-            }
-
-            @Override
-            protected void onPostExecute(List<Item> list) {
-                data.setValue(list);
+                data.postValue(list);
+                return null;
             }
 
         }.execute();
